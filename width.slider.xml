@@ -1,0 +1,41 @@
+<div class='font-range'>          
+                <input class='w-full h-2 bg-accent rounded-lg appearance-none cursor-pointer dark:bg-accent' id='range' max='1200' min='600' type='range' value='800'/>
+              </div>
+
+
+range data
+
+
+
+<script type='text/javascript'>
+/*<![CDATA[*/
+// Width Resize
+var range = document.getElementById("range");
+var body = document.querySelector(".range");
+var font = document.querySelector(".range");
+
+checkFontSize();
+
+range.oninput = function () {
+  console.log(this.values);
+  body.style.setProperty("max-width", this.value + "px");
+  window.localStorage.setItem("fontSize", this.value + "px");
+  window.localStorage.setItem("range", this.value);
+
+};
+
+function checkFontSize() {
+  var fontSize = window.localStorage.getItem("fontSize");
+  var rangeValue = window.localStorage.getItem("range");
+
+  if (fontSize !== null) {
+    body.style.setProperty("max-width", fontSize);
+    range.value = rangeValue;
+
+  } else {
+    body.style.setProperty("max-width", "800px");
+    range.value = 100;
+  }
+
+}/*]]>*/
+</script>
