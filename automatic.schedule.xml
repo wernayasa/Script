@@ -1,0 +1,31 @@
+<style>
+#isJadwal{--dark-j:#292929;--dark-txt:#959595;--dark-bg-item:#1a1a1a;--dark-j-link:#666;color:var(--dark-txt);}
+.jrai321{display:-moz-box;display:-ms-flexbox;display:-webkit-box;display:-webkit-flex;display:flex;flex-wrap:wrap;align-items:flex-start;}
+.jrai-fix{width:calc(100% / 4);padding:2px;box-sizing:border-box;}
+.jrai-title{font-family:sans-serif;text-align:center;padding:4px 6px;text-transform:uppercase;font-size:.94rem;font-weight:700;background:var(--dark-j);border-radius:.25rem;}
+.jrai-wrap ul{margin:0!important;padding:0!important;color:#333;background:var(--dark-bg-item);}
+.jrai-wrap ul li:nth-child(2n-1){background:#181818;}
+.jrai-wrap ul li{list-style:none;padding:3px;transition:all .3s;margin:0!important;}
+.daily-Sched.active{background:#d01922;color:#fff;}
+.jrai-wrap ul li:hover{background:#212121;}
+.jrai-wrap ul li a{color:var(--dark-j-link);margin-left:70px;display:block;}
+.jrai-wrap ul li a:hover{color:var(--dark-j-link);}
+.ep{float:left;width:70px;display:block;font-size:0.8em;font-weight:500;color:#bbaeae;padding:3px 0;}
+@media only screen and (max-width:768px){.jrai-fix{width:calc(100% / 2);}}
+@media screen and (max-width:480px){.jrai-fix{width:100%;}}
+</style>
+
+<div id='isJadwal' data-label='Ongoing'></div>
+
+<script>
+  const isJadwal={
+  config:{
+    days: ["Senin","Selasa","Rabu","Kamis","Jumat","Sabtu","Minggu"]
+  },jQcheck:()=>"function"==typeof jQuery,run:function(){if(0==this.jQcheck())return;let t=$("#isJadwal");if(0!=t.length&&t.data("label")){const e=this.config,a=this;$.ajax({type:"get",url:`${e.site||""}/feeds/posts/summary/-/${t.data("label")}`,data:{alt:"json","max-results":150},dataType:"jsonp",success:t=>{if("entry"in t.feed){let e=new Array;$.each(t.feed.entry,(t,a)=>{e.push({title:a.title.$t,url:a.link.find(t=>"alternate"==t.rel).href,cat:a.category.map(t=>t.term)})}),a.compile(e)}else $("#isJadwal").html(`<p>${e.textNotFound||"Post Not Found"}</p>`)},error:()=>{$("#isJadwal").html(`<p>${e.textError||"Error"}</p>`)}})}},compile:function(t){let e=this.config,a=e.days.reduce((t,e)=>(t[e]=[],t),{}),i=this;$.each(t,(t,i)=>{let l=i.cat.find(t=>e.days.includes(t));if(l)a[l].push(i);else{let t=e.random||"Random";t in a?a[t].push(i):a[t]=[i]}}),i.create(a)},create:function(t){let e="<div class='jrai321'>",a=this.config;$.each(t,(t,i)=>{e+=`<div class='jrai-fix'><div class='jrai-wrap'><div class='jrai-title daily-Sched'>${t}</div><ul>`,0!=i.length?$.each(i,(t,a)=>{e+=`<li><div class='ep'>${a.cat.find(i => i.includes('Ep'))}</div><a href='${a.url}'>${a.title}</a></li>`}):e+=`<li>${a.textNotFound||"Not Found"}</li>`,e+="</ul></div></div>"}),e+="</div>",$("#isJadwal").html(e)}};isJadwal.run();
+setTimeout(function(){
+var d = new Date();
+var n = d.getDay();
+n = n > 0 ? n - 1 : 6; // zero is sunday, not monday in javascript
+$('.daily-Sched').eq(n).addClass('active');
+},3000); 
+  </script>
