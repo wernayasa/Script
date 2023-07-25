@@ -1,0 +1,82 @@
+<section id="mTP_Slider" class="top">
+<script>mTP.run(jQuery, false, 5, 5)</script>
+</section>
+
+<script type='text/javascript'>/*<![CDATA[*/
+let multiTab = new BloggerScript({
+  allRandom: true,
+  jumlah: 5,
+  label: ["Action", "Adventure", "Comedy", "Drama", "Ecchi", "Fantasy", "Game", "Harem", "Historical", "Isekai", "Horror", "Josei", "Magic", "Mecha", "Military", "Music", "Mystery", "Parody", "Police", "Psychological", "Romance", "Samurai", "School", "School Life", "Sci-Fi", "Seinen", "Shoujo", "Shoujo Ai", "Shounen", "Slice of Life", "Space", "Sports", "Super Power", "Supernatural", "Thriller", "Vampire", "Yuri"],
+  maxTab: 5,
+  noImage: '',
+  sizeImage: 'w207-h300'
+})
+
+function _multiTab(e) {
+  let obj = {};
+  multiTab.config.label.filter(label => {
+    e.filter(item => {
+      let check = item.label.some(s => s == label);
+      if (check) {
+        if (obj[label]) {
+          obj[label].push(item)
+        } else {
+          obj[label] = [item];
+        }
+      }
+    })
+  })
+  window.matchMedia("(max-width: 600px)").matches && (multiTab.config.maxTab = 3);
+  window.matchMedia("(max-width: 480px)").matches && (multiTab.config.maxTab = 2);
+  let html = '<div class="series-gen">';
+  let nav = '<div class="head"><ul class="nav-tabs tabs tab r2">';
+  let inner = '<div class="listupd">';
+  let post = '';
+  let label = multiTab.shuffle(Object.keys(obj)).slice(0, multiTab.config.maxTab).sort().reduce((t, e) => (t[e] = obj[e], t), {});
+  for (const key in label) {
+    if (Object.hasOwnProperty.call(label, key)) {
+      const item = multiTab.shuffle(label[key]).slice(0, multiTab.config.jumlah);
+      nav += `<li><span data-id="series-${key.replace(/\W/g, '').toLowerCase()}">${key}</span></li>`;
+      post += `<div id="series-${key.replace(/\W/g, '').toLowerCase()}" class="customAF scroll"><div class="scrolling inner">`
+
+      item.forEach(i => {
+        let title = i.title;
+        let score = i.label.find(i => !/[^0-9\.-]+/g.test(i)) || i.label.find(i => i.includes('Score'))?.split(' ')[1] || '0.0';
+        let link = i.link;
+        let status = i.label.find(i => ['Ongoing', 'Completed', 'Dropped', 'Cooming Soon'].includes(i)) || false;
+        let tipe = i.label.find(i => ['Manga', 'Manhwa', 'Manhua'].includes(i)) || false;
+        let image = i.image;
+
+        post += `<article class="customAgata"><a href="${link}" title="${title}">`;
+        post += `<div class="images"><figure>`;
+        status && (post += `<span style="z-index:1;" class="absolute ong ttu fs-11">${status}</span>`);
+        post += `<img src="${image}" alt="${title}"/>`
+        tipe && (post += `<span class="absolute po ${tipe.toLowerCase()}">${tipe}</span>`);
+        post += `</figure></div>`;
+        post += `<h2 class="entry-title">${title}</h2>`;
+        post += '<div class="rating"><div class="rating-prc"><div class="rtp"><div class="rtb">';
+        post += `<span style="width:${score.length == 4 ? score == '10.0' ? score.replace('.', '') : score.replace('.', '').slice(0, -1) : score.replace('.', '')}%"></span>`;
+        post += `</div></div><div class="num" content="${score}">${score}</div></div></div>`
+        post += `</a></article>`;
+      })
+
+      post += '</div></div>';
+    }
+  }
+  html += `${nav}</ul></div>${inner + post}</div></div>`;
+  document.getElementById('mTP_Slider').innerHTML = html;
+  let se = document.querySelectorAll('[data-id*=series');
+  se.forEach(i => {
+    i.parentElement.addEventListener('click', e => {
+      let id = e.currentTarget.querySelector('span').dataset.id;
+      se.forEach(l => l.parentElement.classList.remove('active'));
+      e.currentTarget.classList.add('active');
+      document.querySelectorAll('.customAF.scroll').forEach(l => l.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+    })
+  })
+  se[0].click();
+};
+
+multiTab.randomPost('/feeds/posts/summary/-/Series', _multiTab);
+/*]]>*/</script>
