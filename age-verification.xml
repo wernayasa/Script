@@ -1,0 +1,68 @@
+// paste di atas /b:skin
+
+.over18 #age-verify {display: none}
+
+// paste di atas /head
+
+<script defer='defer' fetchpriority='low'>//<![CDATA[
+if (localStorage.getItem('isVerified')) {
+    document.documentElement.classList.add('over18')
+  }
+//]]></script>
+
+// Cari id='Blog1' 
+scroll ke bawah paste di atas id='main' var='this'
+
+<b:includable id='allert'>
+
+<!-- Main modal -->
+<div aria-hidden='true' class='fixed top-0 left-0 right-0 z-50 w-full p-4 overflow-x-hidden overflow-y-auto h-full max-h-full justify-center items-center hidden bg-accent/50 backdrop-blur' data-modal-backdrop='static' id='age-verify' tabindex='-1'>
+  <div class='relative w-full max-w-2xl max-h-full text-sm'>
+    <!-- Modal content -->
+    <div class='relative bg-white rounded-lg shadow dark:bg-gray-700'>
+      <!-- Modal header -->
+      <div class='flex items-start justify-between p-4 border-b rounded-t dark:border-gray-600'>
+        <h3 class='text-xl font-semibold text-gray-900 dark:text-white'>
+          Age Verification
+        </h3>
+      </div>
+      <!-- Modal body -->
+      <div class='p-4 space-y-4'>
+        <p class='leading-relaxed text-gray-500 dark:text-gray-400'>
+          By clicking Yes, I certify that I am over the age of 18 and will comply with the above statement.
+        </p>
+        <p class='leading-relaxed text-gray-500 dark:text-gray-400'>
+          Please, verify your age to enter.
+        </p>
+      </div>
+      <!-- Modal footer -->
+      <div class='flex items-center p-6 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600'>
+        <button class='text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg inline-flex items-center px-5 py-2.5 text-center mr-2' data-modal-hide='age-verify' data-modal-target='age-verify' id='over18' type='button'>Yes,I am over 18</button>
+        <a class='text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600' expr:href='data:blog.homepageUrl'>Back to Homepage</a>
+      </div>
+    </div>
+  </div>
+</div>
+</b:includable>
+
+// paste di bawah <data:post.body/>
+// lokasinya bisa berbeda inspece element untuk meneukan lokasinya.
+
+<b:include cond='data:post.labels any ( l =&gt; l.name in [&quot;Ecchi&quot;, &quot;Gore&quot;, &quot;NSFW&quot;] )' name='allert'/>
+
+// paste di atas /body
+<script defer='defer' fetchpriority='low'>//<![CDATA[
+var root = document.documentElement
+var button = document.querySelector('#over18')
+button.addEventListener('click', () => {
+
+  root.classList.toggle('over18')
+
+  if (root.classList.contains('over18')) {
+    localStorage.setItem('isVerified', '1')
+  } else {
+    localStorage.removeItem('isVerified')
+  }
+
+})
+//]]></script>
