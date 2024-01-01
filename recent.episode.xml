@@ -1,0 +1,75 @@
+/* CSS Recent Episode*/
+.hfeed-h{grid-template-columns:repeat(auto-fill,minmax(160px,1fr));}
+.type{font-size:11px;display:block;line-height:normal;padding:2px 5px;bottom:5px;left:5px;border-radius:3px;font-weight:500;color:#FFF;background:#3367d6;}
+[data="SUB"]{background:#fe6300;}
+[data="Movie"]{background:#c03636;}
+.view{position:absolute;bottom:5px;right:5px;z-index:1;font-size:12px;font-weight:500;padding:1px 5px;border-radius:3px;background:rgba(33,33,33,.6);color:#fff;}
+.ply{display:none;position:absolute;width:100%;z-index:2;height:100%;top:0;background:rgba(34,58,101,.7);}
+.dashicons{background:rgba(14,86,193,.64);border-radius:20%;border:2px solid #3367d6;}
+.bsx:hover .ply{display:grid;color:white;}
+.h-13{height:13px;}
+.w-13{width:13px;}
+.w-30{width:30px;}
+.h-30{height:30px;}
+.w-40{width:40px;}
+.h-40{height:40px;}
+
+<!-- 
+Paste di bawah <b:defaultmarkup type='Common'>
+-->
+  <b:includable id='labelEpisode'>
+        <b:with value='[&quot;Episode&quot;, &quot;Eps&quot;, &quot;Ep&quot;]' var='checkEpisode'>
+          <b:if cond='data:post.labels'>
+            <b:loop values='data:post.labels' var='item'>
+              <b:with value='&quot;String: &quot; + data:item.name' var='string'>
+                <b:loop values='data:checkEpisode' var='first'>
+                  <b:if cond='data:string contains data:first + &quot; &quot;'>
+                    <span class='eps'><data:item.name/></span>
+                  </b:if>
+                </b:loop>
+              </b:with>
+            </b:loop>
+          </b:if>
+          </b:with>
+          </b:includable>
+        <b:includable id='type' var='post'>
+          <b:loop index='i' values='data:post.labels' var='label'>
+            <b:if cond='data:label.name in data:Format'>
+              <a class='type absolute b-0' expr:data='data:label.name' expr:href='data:label.url' rel='tag'>
+                <data:label.name/>
+              </a>
+            </b:if>
+          </b:loop>
+        </b:includable>
+  <b:includable id='Episode'>  
+                              <article class='bsx'>
+                                <a class='clamp toe oh block lh-20 mt8 ck tac' expr:href='data:post.url'><data:post.title/></a>
+                                <div class='b-img full-i i-mage oh relative r2'>
+                                  <a class='block pt-60p' expr:href='data:post.url'>
+                                    <b:include data='{                         image: data:post.featuredImage,                         imageSizes: [141, 198],                         imageRatio: &quot;1:2&quot;,                         sourceSizes: &quot;198px&quot;                        }' name='responsiveImage'/>
+                                  </a>
+                                  <div class='view'><div class='post-views content-post post-170117 entry-meta'><span class='post-views-count'>31,281</span> <span class='post-views-label'>Views</span> </div> </div>
+                                  <b:include data='post' name='type'/>
+                                  <b:include name='Category'/>
+                                  <a class='ply c-fff pcc' expr:href='data:post.url'><svg class='w-30 h-30' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M8 5.14v14l11-7z' fill='currentColor'/></svg></a>
+                                </div> 
+                                <div class='flex jcsb fs-14 mt-5'>
+                                <b:include name='labelEpisode'/>
+                                  <div class='flex aic fs-13 mla c-666'>
+                                    <svg class='w-13 h-13 mr-3' height='12' viewBox='0 0 512 512' width='12' xmlns='http://www.w3.org/2000/svg'><path d='M256 64C150 64 64 150 64 256s86 192 192 192s192-86 192-192S362 64 256 64Z' fill='none' stroke='currentColor' stroke-miterlimit='10' stroke-width='32'/><path d='M256 128v144h96' fill='none' stroke='currentColor' stroke-linecap='round' stroke-linejoin='round' stroke-width='32'/></svg> 
+                                <time class='timeago flex aic' expr:datetime='data:post.date.iso8601' expr:title='data:post.date.iso8601'>
+                                  <data:post.date/>
+                                </time>
+                                  </div>
+                                </div>
+                              </article>
+                            </b:includable>
+
+
+  <!-- 
+  Cari id='Blog1'
+  pastekan di bawah <b:includable id='main' var='this'>
+  atau kamu cari sendiri lokasinya
+  -->
+
+  <b:include data='post' cond='data:view.isHomepage' name='Episode'/>
