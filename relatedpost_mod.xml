@@ -1,0 +1,51 @@
+<script crossorigin='anonymous' defer='defer' fetchpriority='low'>//<![CDATA[
+         var related = new BloggerRelated({
+   labels: ['Fantasy'],
+   jumlah: 7,
+   noImage: 'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgu__ZMDj4Q-1v-2c50s55Sp0vnfiabiNy7aMqr6nykUKgXi7E_1r6upRUvORBA1eMyO_Iia4dPvWGHJXPdtF1rmY5-dk3ZzFGgT85ia52BAFXiFAPqu3ciwtAu0BHZPwhFaAKe2Gxg7afpv4LRqj_HUf1IuO7uvrXNop0Kqp3-geZv3e0WjYP88OFn/s128/blogger.png',
+   sizeImage: 's320'
+});
+
+function _related(post) {
+   let html = `<ul class='custom_post_v1 m-0 lsn'>`;
+   post.forEach(post => {
+      let ep = post.label.find(i => /^Ch\s\d+/.test(i)) || post.label.find(i => i.includes('Ch'))?.split(' ')[1] || '?';
+		let score = post.label.find(i => !/[^0-9\.-]+/g.test(i)) || post.label.find(i => i.includes('Score'))?.split(' ')[1] || '0.0';
+      let status = post.label.find(i => ['Ongoing', 'Completed', 'Dropped', 'Cooming Soon'].includes(i)) || '';
+      let tipe = post.label.find(i => ['Manga', 'Manhwa', 'Manhua'].includes(i)) || false;
+      let konten = post.label.find(i => ['Ecchi', 'Hentai', '18+', 'NSFW'].includes(i)) || "";
+html += `<li class='cp1_items ${konten.toLowerCase()}'><div class='cp1_item'>`;
+   html += `<div class='cp1_limit'><span class='absolute' style='z-index:1;'>${konten}</span>`;
+   html += `<img alt='${post.title}' class='absolute inset-0 object-cover w-full h-full shadow' loading='lazy' src='${post.image}'/><a href='${post.link}'></a>`;
+   tipe && (html += `<span class='absolute po ${tipe.toLowerCase()}'>${tipe}</span></div>`);
+   html += `<div class='cp1_bigor'><a class='cp1_tt' href='${post.link}'>${post.title}</a>
+      <div class="cp1_adds"><span class='cp1_epxs' data-name='${status}'>${ep}</span>
+<div class='flex aic jcsb'>
+<div class='num' content='${score}'>${score}</div><div><span class='status-dot ${status}'></span><i>${status}</i></div>
+</div>
+</div></div>
+</div>`;
+   html += '</div></li>';
+   });
+   html += '</ul>';
+   document.getElementById('relatedPostV2').innerHTML = html;
+}
+related.run('/feeds/posts/default', _related);
+        //]]></script> 
+
+
+
+        .status-dot {
+         height: 10px;
+         width: 10px;
+         border-radius: 100%;
+         display: inline-block;
+         position: relative;
+          margin-inline-end: 3px;
+       }
+       .status-dot.Dropped {
+         background: red;
+       }
+       .status-dot.Ongoing {
+         background: #319f00;
+       }
