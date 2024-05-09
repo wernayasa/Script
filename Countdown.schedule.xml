@@ -12,7 +12,9 @@
     }
 </style>
 
-
+<script>
+    const schedule = '2024-5-10';
+</script>
 
 <div id='schedule-wrapper'>
     <div class='text-big' id='next-schedule'></div>
