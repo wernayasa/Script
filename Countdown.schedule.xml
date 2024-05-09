@@ -1,0 +1,55 @@
+<style>
+    .text-big {
+        font-size: 24px;
+    }
+
+    #schedule-wrapper {
+        display: block; /* Menampilkan secara default */
+    }
+
+    #schedule-wrapper.hide {
+        display: none; /* Menyembunyikan jika tidak ditemukan */
+    }
+</style>
+
+
+
+<div id='schedule-wrapper'>
+    <div class='text-big' id='next-schedule'></div>
+</div>
+
+
+<script>
+    // Cek apakah variabel schedule ada atau tidak
+    if (typeof schedule === 'undefined') {
+        // Jika tidak ada, tambahkan kelas hide ke wrapper untuk menyembunyikannya
+        document.getElementById('schedule-wrapper').classList.add('hide');
+    } else {
+        // Jika ada, jalankan countdown seperti biasa
+        function countdown() {
+            // Tanggal saat ini
+            const now = new Date().getTime();
+
+            // Tanggal episode tayang
+            const scheduledDate = new Date(schedule).getTime();
+
+            // Selisih waktu antara sekarang dan episode tayang
+            const difference = scheduledDate - now;
+
+            // Menghitung jumlah hari, jam, menit, dan detik
+            const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((difference % (1000 * 60)) / 1000);
+
+            // Menampilkan hasil countdown
+            document.getElementById('next-schedule').innerHTML = `Next episode will air in ${days}d ${hours}h ${minutes}m ${seconds}s`;
+        }
+
+        // Memanggil fungsi countdown setiap detik
+        setInterval(countdown, 1000);
+
+        // Memanggil countdown untuk pertama kali
+        countdown();
+    }
+</script>
